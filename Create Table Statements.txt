@@ -1,0 +1,69 @@
+CREATE TABLE Building
+(BuildingName varchar(50) PRIMARY KEY NOT NULL,
+Address varchar(50) NOT NULL
+) engine=InnoDB;
+
+CREATE TABLE Classroom 
+(RoomNumber int PRIMARY KEY NOT NULL,
+BuildingName varchar(50),
+Features varchar(100) DEFAULT 'None',
+FOREIGN KEY (BuildingName) REFERENCES Building(BuildingName)
+) engine=InnoDB;
+
+CREATE TABLE Office
+(OfficeID int PRIMARY KEY AUTO_INCREMENT,
+BuildingName varchar(50),
+FOREIGN KEY (BuildingName) REFERENCES Building(BuildingName)
+) engine=InnoDB;
+
+CREATE TABLE Faculty
+(FacultyID int PRIMARY KEY AUTO_INCREMENT,
+OfficeID int,
+Firstname varchar(20) NOT NULL,
+Lastname varchar(20) NOT NULL,
+Department varchar(50),
+Email varchar(50),
+FOREIGN KEY (OfficeID) REFERENCES Office(OfficeID)
+) engine=InnoDB;
+
+CREATE TABLE Course 
+(CourseID int PRIMARY KEY AUTO_INCREMENT,
+FacultyID int,
+CourseName varchar(50),
+Department varchar(50),
+RoomNumber int,
+Prereqs varchar(255) DEFAULT 'None',
+FOREIGN KEY (FacultyID) REFERENCES Faculty(FacultyID)
+) engine=InnoDB;
+
+CREATE TABLE Advisor 
+(AdvisorID int PRIMARY KEY AUTO_INCREMENT,
+Firstname varchar(20) NOT NULL,
+Lastname varchar(20) NOT NULL,
+Email varchar(50),
+Expertise varchar(50),
+OfficeID int,
+FOREIGN KEY (OfficeID) REFERENCES Office(OfficeID)
+) engine=InnoDB;
+
+CREATE TABLE Student 
+(StudentID int PRIMARY KEY AUTO_INCREMENT,
+Firstname varchar(10) NOT NULL,
+Lastname varchar(10) NOT NULL,
+Rank varchar(20) NOT NULL,
+Major varchar(20) DEFAULT 'Undeclared',
+AdvisorID int,
+FOREIGN KEY (AdvisorID) REFERENCES Advisor(AdvisorID)
+) engine=InnoDB; 
+
+CREATE TABLE Grade 
+(StudentID int,
+CourseID int,
+RoomNumber int,
+Credits int NOT NULL,
+GPA varchar(10) NOT NULL,
+Semester varchar(20) NOT NULL,
+FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+FOREIGN KEY (RoomNumber) REFERENCES Classroom(RoomNumber),
+FOREIGN KEY (CourseID) REFERENCES Course(CourseID)
+) engine=InnoDB;

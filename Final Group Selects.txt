@@ -1,0 +1,45 @@
+MU1
+
+SELECT CourseName, Department
+FROM Course
+WHERE Prereqs='None'
+ORDER BY Department DESC;
+
+MU2
+
+
+
+2a
+SELECT RoomNumber
+FROM Classroom
+WHERE Features = 'Multiple Projectors';
+
+7a
+SELECT CONCAT(S.Firstname + ' ' + S.Lastname) as fullname, S.Major
+FROM Student as S, Advisor as A
+WHERE A.AdvisorID = 2
+ORDER BY fullname ASC;
+
+3b
+
+SELECT CONCAT(F.Firstname + ' ' + F.Lastname) as Fullname, F.OfficeID,  F.Department, F.Email
+FROM Faculty as F
+WHERE NOT EXISTS
+(SELECT *
+FROM Course as C
+WHERE F.FacultyID=C.FacultyID AND CourseName='Social Informatics');
+
+4b
+
+
+
+6c
+
+SELECT CONCAT(S.Firstname + ' ' + S.Lastname) as Students, CONCAT(F.Firstname + ' ' + F.Lastname) as Faculty
+FROM Student as S, Faculty as F, Building as B, Office as O, Grade as G, Classroom as Cl
+WHERE ClassStartTime BETWEEN 11 AND 1 AND B.BuildingName='Informatics East' AND F.OfficeID=O.OfficeID AND O.BuildingName=B.BuildingName AND G.StudentID=S.StudentID AND G.RoomNumber=Cl.RoomNumber AND Cl.BuildingName=B.BuildingName
+UNION ALL
+SELECT CONCAT(F.Firstname + ' ' + F.Lastname) as FacOffice, CONCAT(A.Firstname + ' ' + A.Lastname) as AdOffice
+FROM Faculty as F, Advisor as A
+WHERE B.BuildingName='Informatics East' AND F.OfficeID=O.OfficeID AND O.BuildingName=B.BuildingName AND A.OfficeID=O.OfficeID;
+
